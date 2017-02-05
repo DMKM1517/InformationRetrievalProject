@@ -146,8 +146,8 @@ public class TfIdfViewer {
 
         for (int i = 0; i < tw.length; i++) {
             df = docFreq(reader, terms[i]);
-            tf = freqs[i]/(double)fmax;
-            idf = Math.log10(1.0 * nDocs / df);
+            tf = freqs[i] / (double)fmax;
+            idf = Math.log10((double)nDocs / df);
             tf_idf = tf * idf;
             tw[i] = new TermWeight(terms[i], tf_idf);
         }
@@ -157,12 +157,15 @@ public class TfIdfViewer {
 
     // Normalizes the weights in t so that they form a unit-length vector
     // It is assumed that not all weights are 0
-    private static double normalize(TermWeight[] t) {
+    private static void normalize(TermWeight[] t) {
         double sws = 0;
         for (int i = 0; i < t.length; i++) {
             sws += Math.pow(t[i].getWeight(), 2);
         }
-        return Math.sqrt(sws); // square root of individual weights squared
+        double sriws = Math.sqrt(sws); // square root of individual weights squared
+        for (int i = 0; i < t.length; i++) {
+        	t[i].setWeight(t[i].getWeight() / sriws);
+        }
     }
 
     // prints the list of pairs (term,weight)
@@ -178,8 +181,8 @@ public class TfIdfViewer {
     // and, as a side effect, normalizes them
     private static double cosineSimilarity(TermWeight[] v1, TermWeight[] v2) {
         double inner_product = 0;
-        double normalized1 = normalize(v1);
-        double normalized2 = normalize(v2);
+        normalize(v1);
+        normalize(v2);
 
         for (int i = 0; i < v1.length; i++) {
             for (int j = 0; j < v2.length; j++) {
@@ -191,7 +194,7 @@ public class TfIdfViewer {
             }
         }
 
-        return inner_product / (normalized1 * normalized2);
+        return inner_product;
     }
 
 }
