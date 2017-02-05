@@ -1,3 +1,0 @@
-setenv LUCENEDIR /opt/lucene-3.6.2
-setenv LUKEDIR /opt/luke-3.5.0
-setenv CLASSPATH .:$LUCENEDIR/lucene-core-3.6.2.jar:$LUCENEDIR/contrib/demo/lucene-demo-3.6.2.jar:/opt/luke-3.5.0/lukeall-3.5.0.jar:$CLASSPATH
